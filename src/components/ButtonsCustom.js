@@ -1,20 +1,15 @@
 import React from 'react';
-import {
-  Pressable,
-  StyleSheet,
-  Text,
-  View,
-  useWindowDimensions,
-} from 'react-native';
+import {Pressable, StyleSheet, Text, useWindowDimensions} from 'react-native';
 
 const CustomButton = ({children, onPress, type}) => {
   const {width} = useWindowDimensions();
-  console.log(width);
+  // console.log(width);
+
   return (
     <Pressable
       android_ripple={{color: '#ccc'}}
       onPress={onPress}
-      style={[styles.button, {width: width < 1280 ? '80%' : '40%'}]}>
+      style={[styles.button, {width: width < 700 ? '80%' : '40%'}]}>
       <Text style={styles.text}>{children}</Text>
     </Pressable>
   );

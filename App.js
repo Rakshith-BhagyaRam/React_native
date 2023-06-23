@@ -1,5 +1,4 @@
-import {SafeAreaView, StyleSheet, Text} from 'react-native';
-import SignInScreen from './src/screens/SignInScreen/SignInScreen';
+import {SafeAreaView, StyleSheet} from 'react-native';
 
 import Navigation from './src/Navigation';
 
