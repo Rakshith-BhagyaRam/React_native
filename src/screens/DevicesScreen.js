@@ -9,11 +9,54 @@ import {
   TouchableHighlight,
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
+import RenderImage from '../components/Image';
+import Title from '../components/Title';
+import color from '../constants/color';
 
 const DeviceScreen = () => {
   const [data, setData] = useState([]);
+  const [userData, setUserData] = useState([]);
   const [selectedItem, setSelectedItem] = useState(null);
   const [modalVisible, setModalVisible] = useState(false);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch('http://203.129.243.94:8086/api/auth', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            op: 'login',
+            emp_id: 'emp222',
+            password: 'password',
+          }),
+        });
+
+        const result = await response.json();
+        setUserData(result.message);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  let token = userData.accessToken;
+
+  console.log(token);
+
+  // .then(response => response.json())
+  // .then(data => {
+  //   token = data.token; // Assuming the token is returned in the response data
+  //   console.log('Generated token:', token);
+  //   // Use the token for further requests or store it as needed
+  //  })
+  // .catch(error => {
+  //   console.error('Error generating token:', error);
+  // });
 
   useEffect(() => {
     const fetchData = async () => {
@@ -23,8 +66,7 @@ const DeviceScreen = () => {
           {
             method: 'POST',
             headers: {
-              Authorization:
-                'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0MDlkZWQ3NTlmN2RkZjU3OTgzZDVmNiIsImlhdCI6MTY4NzQxMzAxNiwiZXhwIjoxNjg3NDk5NDE2fQ.i_rWXoCgQPXasa1eKWKU9A2xvCcr_33DH7WwVYrI2R0',
+              Authorization: `Bearer ${token}`,
               'Content-Type': 'application/json',
             },
             body: JSON.stringify({
@@ -59,14 +101,22 @@ const DeviceScreen = () => {
   );
 
   return (
-    <LinearGradient colors={['#40E0D0', '#32de84']} style={{flex: 1}}>
+    <LinearGradient
+      colors={[color.torons, color.androidGreen]}
+      style={{flex: 1}}>
       <View style={styles.container}>
+        <View style={{alignItems: 'center'}}>
+          <RenderImage></RenderImage>
+        </View>
+
         <FlatList
           data={data}
           renderItem={renderItem}
           keyExtractor={item => item._id}
           contentContainerStyle={styles.listContainer}
+          showsVerticalScrollIndicator={false}
         />
+
         <Modal
           animationType="slide"
           transparent={true}
@@ -78,6 +128,7 @@ const DeviceScreen = () => {
             <View style={styles.modalView}>
               {selectedItem && (
                 <View>
+                  <Title>Details</Title>
                   <Text style={styles.InnerText}>ID: {selectedItem._id}</Text>
                   <Text style={styles.InnerText}>
                     Device ID: {selectedItem.device_id}
@@ -120,7 +171,7 @@ const styles = StyleSheet.create({
     paddingBottom: 16,
   },
   item: {
-    backgroundColor: '#0944A0',
+    backgroundColor: color.blue,
     padding: 10,
     marginVertical: 10,
     borderRadius: 14,
@@ -130,6 +181,9 @@ const styles = StyleSheet.create({
   },
   InnerText: {
     color: 'black',
+    fontWeight: 'bold',
+    fontSize: 15,
+    margin: 5,
   },
   centeredView: {
     flex: 1,
@@ -146,7 +200,7 @@ const styles = StyleSheet.create({
   },
   closeButton: {
     marginTop: 20,
-    backgroundColor: '#0944A0',
+    backgroundColor: color.blue,
     borderRadius: 14,
     padding: 10,
   },

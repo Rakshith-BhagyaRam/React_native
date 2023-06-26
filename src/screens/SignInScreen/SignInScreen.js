@@ -7,6 +7,8 @@ import CustomButton from '../../components/ButtonsCustom';
 import {useNavigation} from '@react-navigation/native';
 import {useForm} from 'react-hook-form';
 import LinearGradient from 'react-native-linear-gradient';
+import RenderImage from '../../components/Image';
+import color from '../../constants/color';
 
 let loginSchema = [
   {
@@ -39,17 +41,17 @@ const SignInScreen = () => {
   // console.log(errors);
 
   const onSignIn = data => {
-    console.log(data);
+    // console.log(data);
     navigation.navigate('Device Screen');
   };
   const onSignUp = () => {};
   const onForgotPassword = () => {};
 
   return (
-    <LinearGradient colors={['#40E0D0', '#32de84']} style={{flex: 1}}>
+    <LinearGradient colors={[color.torons, color.androidGreen]} style={{flex: 1}}>
       <ScrollView showsVerticalScrollIndicator={false}>
         <View style={styles.container}>
-          <Image source={logo} style={styles.logo} />
+          <RenderImage></RenderImage>
           <View style={styles.inputContainer}>
             <CustomInput
               name="username"
