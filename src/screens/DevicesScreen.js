@@ -10,10 +10,34 @@ import {
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 
-const DeviceScreen = () => {
+const Device = () => {
   const [data, setData] = useState([]);
+  const [userData, setUserData] = useState([]);
   const [selectedItem, setSelectedItem] = useState(null);
   const [modalVisible, setModalVisible] = useState(false);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch('http://203.129.243.94:8086/api/auth', {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json '},
+          body: JSON.stringify({
+            op: 'login',
+            emp_id: 'emp111',
+            password: 'password',
+          }),
+        });
+
+        const result = await response.json();
+        setUserData(result.message);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -23,8 +47,7 @@ const DeviceScreen = () => {
           {
             method: 'POST',
             headers: {
-              Authorization:
-                'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0MDlkZWQ3NTlmN2RkZjU3OTgzZDVmNiIsImlhdCI6MTY4NzQxMzAxNiwiZXhwIjoxNjg3NDk5NDE2fQ.i_rWXoCgQPXasa1eKWKU9A2xvCcr_33DH7WwVYrI2R0',
+              Authorization: `Bearer ${userData.accessToken}`,
               'Content-Type': 'application/json',
             },
             body: JSON.stringify({
@@ -33,6 +56,7 @@ const DeviceScreen = () => {
             }),
           },
         );
+
 
         const result = await response.json();
         setData(result.message);
@@ -129,7 +153,9 @@ const styles = StyleSheet.create({
     color: 'white',
   },
   InnerText: {
-    color: 'black',
+    color: 'black',    
+    fontWeight:'bold',
+    fontSize:18
   },
   centeredView: {
     flex: 1,
@@ -142,7 +168,9 @@ const styles = StyleSheet.create({
     padding: 20,
     borderRadius: 14,
     width: '80%',
+    maxWidth: 320,
     alignItems: 'center',
+
   },
   closeButton: {
     marginTop: 20,
@@ -154,6 +182,6 @@ const styles = StyleSheet.create({
     color: 'white',
     textAlign: 'center',
   },
-});
+}); 
 
-export default DeviceScreen;
+export default Device;

@@ -10,7 +10,7 @@ import LinearGradient from 'react-native-linear-gradient';
 
 let loginSchema = [
   {
-    key: 'emp111',
+    key: 'emp333',
     displayName: '',
     placeholder: 'Your Employee ID',
     value: '',
@@ -75,9 +75,7 @@ const SignInScreen = () => {
               secureTextEntry
             />
           </View>
-          <CustomButton onPress={handleSubmit(onSignIn)} >
-            Sign In
-          </CustomButton>
+          <CustomButton onPress={handleSubmit(onSignIn)}>Sign In</CustomButton>
           {/* <CustomButton onPress={onForgotPassword} >
             Forgot Password ?
           </CustomButton>
